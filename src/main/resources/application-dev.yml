@@ -1,0 +1,13 @@
+
+
+
+
+
+
+########## 自定义参数配置 ###########
+warehouse:
+  picture:
+    root: f:/picture
+
+prefix:
+  picture: http://changyeyi.com/pic
