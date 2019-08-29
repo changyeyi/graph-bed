@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片上传</title>
+    <script src="./jquery-3.4.1.min.js"></script>
+    <script>
+
+        //展示选择的图片
+        function changePic() {
+            //判断是否为图片
+            const filePath = $("#file").val();
+            if(!filePath.substring(filePath.lastIndexOf(".")).toLocaleLowerCase().match(/.png|.jpg|.jpeg/)){
+                alert("文件格式必须为png/jpg/jpeg");
+                return;
+            }
+            //将文件转换为本地可视
+            const reads = new FileReader();
+            const file = document.getElementById('file').files[0];
+            reads.readAsDataURL(file);
+            reads.onload = function(e) {
+                document.getElementById('show').src = this.result;
+                $("#show").css("display", "block");
+            };
+        }
+
+        // 图片上传
+        function upload(){
+            //判断是否为图片
+            const filePath = $("#file").val();
+            if(!filePath.substring(filePath.lastIndexOf(".")).toLocaleLowerCase().match(/.png|.jpg|.jpeg/)){
+                alert("文件格式必须为png/jpg/jpeg");
+                return;
+            }
+            //图片上传
+            const formData = new FormData();
+            formData.append("file",document.getElementById("file").files[0]);
+            $.ajax({
+                url:"/picture",
+                type:"post",
+                data:formData,
+                contentType:false,
+                processData:false,
+                mimeType:"multipart/form-data",
+                success:function(data){
+                    //将结果展示找界面
+                    $("#pictureUrl").html(data);
+                    $("#copyUrl").css("display", "inline-block");
+                },
+                error:function(data){
+                    console.log(data)
+                }
+            });
+        }
+
+        //复制图片URL到粘贴板
+        function copyUrl(){
+            const input = document.createElement('input');
+            document.body.appendChild(input);
+            input.setAttribute('value', $("#pictureUrl").html());
+            input.select();
+            if (document.execCommand('copy')) {
+                document.execCommand('copy');
+                console.log('复制成功');
+            }
+            document.body.removeChild(input);
+        }
+    </script>
+    <style>
+        #show {
+            display: none;
+        }
+        #copyUrl{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="uploadPicture">
+        <input id="file" type="file" value="选择图片" onchange="changePic()"/>
+        <input type="button" value="上传" onclick="upload()">
+    </form>
+    <br/>
+    <text id="pictureUrl"></text><button id="copyUrl" onclick="copyUrl()">复制</button>
+    <br/><br/>
+    <img src="#" id="show"  alt=""/>
+
+</body>
+</html>

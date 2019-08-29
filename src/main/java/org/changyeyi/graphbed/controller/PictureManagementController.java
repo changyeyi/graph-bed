@@ -1,6 +1,7 @@
 package org.changyeyi.graphbed.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +45,21 @@ public class PictureManagementController {
         return hostPrefix+picture.getAbsolutePath().replace("\\","/").replace(pictureRoot,"");
     }
 
+    @DeleteMapping
+    public String deletePicture(@RequestParam("picture_url")String pictureUrl){
+        if(!StringUtils.isEmpty(pictureUrl)){
+            String filePath = pictureUrl.replace(hostPrefix, "");
+            File file = new File(filePath);
+            if(file.exists()&&file.isFile()){
+                file.delete();
+                return "ok";
+            }else {
+                return "文件不存在";
+            }
+        }else {
+            return "图片路径为空";
+        }
+    }
     private String uuid(){
         return UUID.randomUUID().toString().replace("-","");
     }

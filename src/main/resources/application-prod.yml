@@ -10,4 +10,4 @@ warehouse:
     root: /data/picture
 
 prefix:
-  picture: http://changyeyi.com/pic
+  picture: https://changyeyi.com/pic
