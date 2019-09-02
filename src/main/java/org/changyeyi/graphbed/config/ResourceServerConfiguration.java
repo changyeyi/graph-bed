@@ -2,22 +2,18 @@ package org.changyeyi.graphbed.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 /**
  * @author :    zj.wu
- * @date :      2019/08/29 17:03
+ * @date :      2019/09/02 11:18
  */
 @Configuration
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableResourceServer
+public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .anyRequest().authenticated()
 //                关闭csrf

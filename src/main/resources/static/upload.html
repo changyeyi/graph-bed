@@ -5,7 +5,25 @@
     <title>图片上传</title>
     <script src="./jquery-3.4.1.min.js"></script>
     <script>
-
+        //token
+        var token='';
+        // 登录
+        function login() {
+            const username=$("#username").val();
+            const password=$("#password").val();
+            let url="/oauth/token?username="+username+"&password="+password+"&grant_type=password&scope=insert&client_id=graph-bed&client_secret=graph-bed"
+            $.ajax({
+                url:url,
+                type:"get",
+                success:function(data){
+                    token=data['access_token'];
+                    $("#getToken").css("display","none");
+                },
+                error:function(data){
+                    console.log(data)
+                }
+            })
+        }
         //展示选择的图片
         function changePic() {
             //判断是否为图片
@@ -26,6 +44,10 @@
 
         // 图片上传
         function upload(){
+            if(token===''){
+                alert("请先登录！！！");
+                return;
+            }
             //判断是否为图片
             const filePath = $("#file").val();
             if(!filePath.substring(filePath.lastIndexOf(".")).toLocaleLowerCase().match(/.png|.jpg|.jpeg/)){
@@ -36,7 +58,7 @@
             const formData = new FormData();
             formData.append("file",document.getElementById("file").files[0]);
             $.ajax({
-                url:"/picture",
+                url:"/picture?access_token="+token,
                 type:"post",
                 data:formData,
                 contentType:false,
@@ -52,7 +74,6 @@
                 }
             });
         }
-
         //复制图片URL到粘贴板
         function copyUrl(){
             const input = document.createElement('input');
@@ -76,6 +97,9 @@
     </style>
 </head>
 <body>
+    <div id="getToken">
+        <label>username:</label><input id="username" type="text"/><label>password:</label><input id="password" type="password"/><button onclick="login()">login</button>
+    </div>
     <form id="uploadPicture">
         <input id="file" type="file" value="选择图片" onchange="changePic()"/>
         <input type="button" value="上传" onclick="upload()">

@@ -1,8 +1,5 @@
 server:
   port: 10000
-#  tomcat:
-#    max-http-post-size: 10MB
-
 
 spring:
   profiles:
@@ -11,3 +8,5 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 10MB
+  main:
+    allow-bean-definition-overriding: true
