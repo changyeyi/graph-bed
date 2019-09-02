@@ -11,13 +11,14 @@
         function login() {
             const username=$("#username").val();
             const password=$("#password").val();
-            let url="/oauth/token?username="+username+"&password="+password+"&grant_type=password&scope=insert&client_id=graph-bed&client_secret=graph-bed"
+            let url="/graph_bed/oauth/token?username="+username+"&password="+password+"&grant_type=password&scope=insert&client_id=graph-bed&client_secret=graph-bed"
             $.ajax({
                 url:url,
                 type:"get",
                 success:function(data){
                     token=data['access_token'];
                     $("#getToken").css("display","none");
+                    $("#upload").css("display", "block");
                 },
                 error:function(data){
                     console.log(data)
@@ -58,7 +59,7 @@
             const formData = new FormData();
             formData.append("file",document.getElementById("file").files[0]);
             $.ajax({
-                url:"/picture?access_token="+token,
+                url:"/graph_bed/picture?access_token="+token,
                 type:"post",
                 data:formData,
                 contentType:false,
@@ -94,20 +95,26 @@
         #copyUrl{
             display: none;
         }
+        #upload{
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div id="getToken">
         <label>username:</label><input id="username" type="text"/><label>password:</label><input id="password" type="password"/><button onclick="login()">login</button>
     </div>
-    <form id="uploadPicture">
-        <input id="file" type="file" value="选择图片" onchange="changePic()"/>
-        <input type="button" value="上传" onclick="upload()">
-    </form>
-    <br/>
-    <text id="pictureUrl"></text><button id="copyUrl" onclick="copyUrl()">复制</button>
-    <br/><br/>
-    <img src="#" id="show"  alt=""/>
+    <div id="upload">
+        <form id="uploadPicture">
+            <input id="file" type="file" value="选择图片" onchange="changePic()"/>
+            <input type="button" value="上传" onclick="upload()">
+        </form>
+        <br/>
+        <text id="pictureUrl"></text><button id="copyUrl" onclick="copyUrl()">复制</button>
+        <br/><br/>
+        <img src="#" id="show"  alt=""/>
+    </div>
+
 
 </body>
 </html>
