@@ -22,8 +22,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if(!StringUtils.isEmpty(username)&&"changyeyi".equals(username)){
             SysUser sysUser = new SysUser();
-            sysUser.setUsername("admin");
-            sysUser.setPassword("123456");
+            sysUser.setUsername("changyeyi");
+            sysUser.setPassword("weiaiyiW1");
             SysRole sysRole = new SysRole();
             sysRole.setId(1L);
             sysRole.setName("admin");
